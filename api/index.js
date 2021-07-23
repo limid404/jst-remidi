@@ -17,11 +17,10 @@ bot.onText(/\/start/, (msg) => {
         msg.chat.id,
         `hello ${msg.chat.first_name}, welcome...\n
         click /predict`
-    ); 
-    bot.sendMessage(msg.chat.id, "Pilihan Anda: ");    
+    );  
 });
 
-bot.onText(/\/1/, (msg) => {
+bot.onText(/\/predict/, (msg) => {
     state = 1;
     bot.sendMessage(
         msg.chat.id, 
