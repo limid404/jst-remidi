@@ -46,7 +46,7 @@ bot.on('message', (msg) => {
         let dt = text.split('|');
         bot.sendMessage(
             msg.chat.id, 
-            `prediksi y1, y2, y3, y4, y5, y6 dengan x1 (${dt[0]}), x2 (${dt[1]}), x3 (${dt[2]}), x4 (${dt[3]}), `
+            `hasil output dengan nilai x1 (${dt[0]}), x2 (${dt[1]}), x3 (${dt[2]}), x4 (${dt[3]}) adalah y1 (${jres[0]}), y2 (${jres[1]}), y3 (${jres[2]}), y4 (${jres[3]}) y5 (${jres[4]}) dan y6 (${jres[5]}) `
         );
 
         model.predict(
