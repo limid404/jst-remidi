@@ -6,7 +6,7 @@ const model = require('./sdk/model.js');
 
 // Bot Setting
 const TelegramBot = require('node-telegram-bot-api');
-const token = '1733547356:AAEOX7oG_z09vS34M-DUHOm5YCPsXYDXohg'
+const token = '1928251630:AAHgX5MoSBZ3F0PACZyNucztqP2PT_eGUNA'
 const bot = new TelegramBot(token, {polling: true});
 
 
@@ -16,7 +16,7 @@ bot.onText(/\/start/, (msg) => {
     state = 0;
     bot.sendMessage(
         msg.chat.id,
-        `Selamat datang di BOT prediksi Tegangan & Daya menggunakan Deep Neural Network.
+        `Selamat datang di BOT prediksi y1, y2, y3, y4, y5, y6 menggunakan Deep Neural Network.
         \nSilahkan pilih menu dibawah ini:\n
         (/1) Prediksi dengan Input i|r
         (/2) Batal`
@@ -28,8 +28,8 @@ bot.onText(/\/1/, (msg) => {
     state = 1;
     bot.sendMessage(
         msg.chat.id, 
-        `Masukan nilai i dan r dengan format i|r \n
-        contohnya: 12|36`
+        `Masukan nilai i dan r dengan format x1|x2|x3|x4 \n
+        contohnya: 10|11|12|13`
     );   
 });
 
@@ -49,18 +49,20 @@ bot.on('message', (msg) => {
         let dt = text.split('|');
         bot.sendMessage(
             msg.chat.id, 
-            `prediksi tegangan dan daya dengan arus (${dt[0]} A) dan resistansi (${dt[1]} Ohm) `
+            `prediksi y1, y2, y3, y4, y5, y6 dengan x1 (${dt[0]}), x2 (${dt[1]}), x3 (${dt[2]}), x4 (${dt[3]}), `
         );
 
         model.predict(
             [
                 parseFloat(dt[0]), // string to float
-                parseFloat(dt[1])
+                parseFloat(dt[1]),
+                parseFloat(dt[2]),
+                parseFloat(dt[3])
             ]
         ).then((jres) => {
             bot.sendMessage(
                 msg.chat.id, 
-                `nilai v dan p adalah (${jres[0]} volt) dan (${jres[1]} watt)`
+                `nilai y1 (${jres[0]}), y2 (${jres[1]}), y3 (${jres[2]}), y4 (${jres[3]}) y5 (${jres[4]}) dan y6 (${jres[5]})`
             );
             bot.sendMessage(
                 msg.chat.id,
@@ -80,11 +82,13 @@ bot.on('message', (msg) => {
 
 
 // routers
-r.get('/prediction/:i/:r', function(req, res, next) {    
+r.get('/prediction/:x1/:x2:/x3:/x4', function(req, res, next) {    
     model.predict(
         [
-            parseFloat(req.params.i), // string to float
-            parseFloat(req.params.r)
+            parseFloat(req.params.x1), // string to float
+            parseFloat(req.params.x2),
+            parseFloat(req.params.x3),
+            parseFloat(req.params.x4)
         ]
     ).then((jres)=>{
         res.json(jres);
