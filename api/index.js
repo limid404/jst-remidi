@@ -25,7 +25,7 @@ bot.onText(/\/menu/, (msg) => {
     console.log(msg)
     bot.sendMessage(
         msg.chat.id,
-        `this is your main menu`
+        `/predict`
     );   
 });
 
