@@ -10,81 +10,89 @@ const token = '1928251630:AAHgX5MoSBZ3F0PACZyNucztqP2PT_eGUNA'
 const bot = new TelegramBot(token, {polling: true});
 
 // bots
-state = 0;
-// Main Menu Bot
-bot.onText(/\/start/, (msg) => { 
+let state = 2;
+bot.onText(/\/start/, (msg) => {    
+    state = 0;
     bot.sendMessage(
         msg.chat.id,
-        `hello ${msg.chat.first_name}, welcome...\n
-        click /predict`
-    );   
-    state = 0;
+        `Selamat datang di BOT prediksi y1, y2, y3, y4, y5, y6 menggunakan Deep Neural Network.
+        \nSilahkan pilih menu dibawah ini:\n
+        (/1) Prediksi dengan Input x1|x2|x3|x4
+        (/2) Batal`
+    ); 
+    bot.sendMessage(msg.chat.id, "Pilihan Anda: ");    
 });
 
-bot.onText(/\/predict/, (msg) => {
+bot.onText(/\/1/, (msg) => {
+    state = 1;
     bot.sendMessage(
         msg.chat.id, 
-        `Masukan nilai x1, x2, x3, x4 dengan format x1|x2|x3|x4 \n
+        `Masukan nilai i dan r dengan format x1, x2, x3, x4 \n
         contohnya: 10|11|12|13`
-    );  
-    state = 1;
+    );   
 });
+
+bot.onText(/\/2/, (msg) => {
+    state = 2;
+    bot.sendMessage(
+        msg.chat.id, 
+        "pilih /start untuk kembali ke menu utama"
+    );   
+});
+
 bot.on('message', (msg) => {
+    const text = msg.text.toString().toLowerCase();
+    console.log(text);
+
     if(state == 1){
-        s = msg.text.split("|");
+        let dt = text.split('|');
+        bot.sendMessage(
+            msg.chat.id, 
+            `prediksi y1, y2, y3, y4, y5, y6 dengan x1 (${dt[0]}), x2 (${dt[1]}), x3 (${dt[2]}), x4 (${dt[3]}), `
+        );
+
         model.predict(
             [
-                parseFloat(s[0]), // string to float
-                parseFloat(s[1]),
-                parseFloat(s[2]),
-                parseFloat(s[3])
-                ]
-            ).then((jres1)=>{
-            console.log(jres1);
-                
-          model.predict([parseFloat(s[0]), parseFloat(s[1]), parseFloat(s[2]), parseFloat(s[3]), parseFloat(jres1[0]), parseFloat(jres1[1]), parseFloat(jres1[2])]), parseFloat(jres1[3]), parseFloat(jres1[4]), parseFloat(jres1[5])]) => {
-                bot.sendMessage(
-                    msg.chat.id,
-                    `nilai Y1 yang diprediksi adalah ${jres1[0]}`
-                    );
-                bot.sendMessage(
-                    msg.chat.id,
-                    `nilai Y2 yang diprediksi adalah ${jres1[1]}`
-                    );
-                bot.sendMessage(
-                    msg.chat.id,
-                    `nilai Y3 yang diprediksi adalah ${jres1[2]}`
-                     );
-                bot.sendMessage(
-                    msg.chat.id,
-                    `nilai Y4 yang diprediksi adalah ${jres1[3]}`
-                     );
-                 bot.sendMessage(
-                    msg.chat.id,
-                    `nilai Y5 yang diprediksi adalah ${jres1[4]}`
-                     );
-                  bot.sendMessage(
-                    msg.chat.id,
-                    `nilai Y6 yang diprediksi adalah ${jres1[5]}`
-                     );
-                        
-            })
-      }
-    state = 1;
+                parseFloat(dt[0]), // string to float
+                parseFloat(dt[1]),
+                parseFloat(dt[2]),
+                parseFloat(dt[3])
+            ]
+        ).then((jres) => {
+            bot.sendMessage(
+                msg.chat.id, 
+                `nilai y1 (${jres[0]}), y2 (${jres[1]}), y3 (${jres[2]}), y4 (${jres[3]}) y5 (${jres[4]}) dan y6 (${jres[5]})`
+            );
+            bot.sendMessage(
+                msg.chat.id,
+                `<= kembali /2`
+            );
+        });        
+    }
+
+    if(state == 2){
+        bot.sendMessage(
+            msg.chat.id, 
+            "pilih /start untuk ke menu utama"
+        );   
+    }
 })
 
+
+
 // routers
-r.get('/predict/:x1/:x2/:x3/:x4', function(req, res, next) {    
-            model.predict(
+r.get('/prediction/:x1/:x2:/x3:/x4', function(req, res, next) {    
+    model.predict(
         [
             parseFloat(req.params.x1), // string to float
             parseFloat(req.params.x2),
             parseFloat(req.params.x3),
             parseFloat(req.params.x4)
         ]
-    ).then((jres1)=>{
-       res.json(jres1)
-    })            
+    ).then((jres)=>{
+        res.json(jres);
+    })
 });
+
 
 module.exports = r;
