@@ -18,7 +18,7 @@ bot.onText(/\/start/, (msg) => {
         msg.chat.id,
         `Selamat datang di BOT prediksi y1, y2, y3, y4, y5, y6 menggunakan Deep Neural Network.
         \nSilahkan pilih menu dibawah ini:\n
-        (/1) Prediksi dengan Input i|r
+        (/1) Prediksi dengan Input x1|x2|x3|x4
         (/2) Batal`
     ); 
     bot.sendMessage(msg.chat.id, "Pilihan Anda: ");    
