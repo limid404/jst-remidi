@@ -28,7 +28,7 @@ bot.onText(/\/1/, (msg) => {
     state = 1;
     bot.sendMessage(
         msg.chat.id, 
-        `Masukan nilai i dan r dengan format x1|x2|x3|x4 \n
+        `Masukan nilai i dan r dengan format x1, x2, x3, x4 \n
         contohnya: 10|11|12|13`
     );   
 });
