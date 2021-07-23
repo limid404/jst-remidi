@@ -29,7 +29,7 @@ async function predict(data){
 
     try{
         // path load in public access => github
-        const path = 'https://raw.githubusercontent.com/limid404/jst-remidi/main/public/model_test/model.json';
+        const path = 'https://raw.githubusercontent.com/limid404/jst-remidi/main/api/sdk/model/model.json';
         const model = await tf.loadGraphModel(path);
         
         predict = model.predict(
